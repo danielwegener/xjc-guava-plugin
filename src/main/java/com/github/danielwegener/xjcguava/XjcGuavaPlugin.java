@@ -15,7 +15,6 @@
  */
 package com.github.danielwegener.xjcguava;
 
-import com.google.common.base.*;
 import com.sun.codemodel.*;
 import com.sun.tools.xjc.BadCommandLineException;
 import com.sun.tools.xjc.Options;
@@ -25,9 +24,7 @@ import com.sun.tools.xjc.outline.Outline;
 import org.xml.sax.ErrorHandler;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.util.*;
-import java.util.Objects;
 
 /**
  * <p>Generate final fields, a constructor for all fields in property order and a protected default constructor that
@@ -82,8 +79,6 @@ public class XjcGuavaPlugin extends Plugin {
 
             final JDefinedClass implClass = classOutline.implClass;
 
-
-
             if (!skipToString && !implClass.isAbstract() && implClass.getMethod("toString",new JType[0]) == null) {
                 generateToStringMethod(model, implClass);
             }
@@ -95,16 +90,13 @@ public class XjcGuavaPlugin extends Plugin {
                     generateEqualsMethod(model,implClass);
                 }
             }
-
-
         }
-
-
         return true;
     }
 
     protected void generateToStringMethod(JCodeModel model, JDefinedClass clazz) {
         final JMethod toStringMethod = clazz.method(JMod.PUBLIC, String.class,"toString");
+        toStringMethod.annotate(Override.class);
         final JClass objects = model.ref(com.google.common.base.Objects.class);
         final Collection<JFieldVar> superClassInstanceFields = getInstanceFields(getSuperclassFields(clazz));
         final Collection<JFieldVar> thisClassInstanceFields = getInstanceFields(clazz.fields().values());
@@ -136,6 +128,8 @@ public class XjcGuavaPlugin extends Plugin {
 
     protected void generateHashCodeMethod(JCodeModel model, JDefinedClass clazz) {
         final JMethod hashCodeMethod = clazz.method(JMod.PUBLIC, model.INT ,"hashCode");
+        hashCodeMethod.annotate(Override.class);
+
         final JClass objects = model.ref(com.google.common.base.Objects.class);
         final Collection<JFieldVar> superClassInstanceFields = getInstanceFields(getSuperclassFields(clazz));
         final Collection<JFieldVar> thisClassInstanceFields = getInstanceFields(clazz.fields().values());
@@ -157,14 +151,15 @@ public class XjcGuavaPlugin extends Plugin {
     }
 
     protected void generateEqualsMethod(JCodeModel model, JDefinedClass clazz) {
-        final JMethod hashCodeMethod = clazz.method(JMod.PUBLIC, model.BOOLEAN ,"equals");
-        final JVar other = hashCodeMethod.param(Object.class,"other");
+        final JMethod equalsMethod = clazz.method(JMod.PUBLIC, model.BOOLEAN ,"equals");
+        equalsMethod.annotate(Override.class);
+        final JVar other = equalsMethod.param(Object.class,"other");
 
         final JClass objects = model.ref(com.google.common.base.Objects.class);
         final Collection<JFieldVar> superClassInstanceFields = getInstanceFields(getSuperclassFields(clazz));
         final Collection<JFieldVar> thisClassInstanceFields = getInstanceFields(clazz.fields().values());
 
-        final JBlock content = hashCodeMethod.body();
+        final JBlock content = equalsMethod.body();
 
         final JConditional ifSameRef = content._if(JExpr._this().eq(other));
         ifSameRef._then()._return(JExpr.TRUE);
@@ -175,16 +170,17 @@ public class XjcGuavaPlugin extends Plugin {
         JExpression equalsBuilder = JExpr.TRUE;
 
         final JVar otherTypesafe = content.decl(JMod.FINAL, clazz, "o", JExpr.cast(clazz, other));
+        content._if(otherTypesafe.eq(JExpr._null()))._then()._return(JExpr.FALSE);
 
         for (JFieldVar superField : superClassInstanceFields) {
-            final JInvocation equalsInvocation = objects.staticInvoke("equals");
+            final JInvocation equalsInvocation = objects.staticInvoke("equal");
             equalsInvocation.arg(superField);
             equalsInvocation.arg(otherTypesafe.ref(superField));
             equalsBuilder = equalsBuilder.cand(equalsInvocation);
         }
 
         for (JFieldVar thisField : thisClassInstanceFields) {
-            final JInvocation equalsInvocation = objects.staticInvoke("equals");
+            final JInvocation equalsInvocation = objects.staticInvoke("equal");
             equalsInvocation.arg(thisField);
             equalsInvocation.arg(otherTypesafe.ref(thisField));
             equalsBuilder = equalsBuilder.cand(equalsInvocation);
