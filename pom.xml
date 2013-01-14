@@ -5,6 +5,12 @@
     <groupId>com.github.danielwegener.xjc</groupId>
     <artifactId>xjc-guava-plugin</artifactId>
     <version>0.1-SNAPSHOT</version>
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
+
     <licenses>
         <license>
             <name>Apache License, Version 2.0</name>
