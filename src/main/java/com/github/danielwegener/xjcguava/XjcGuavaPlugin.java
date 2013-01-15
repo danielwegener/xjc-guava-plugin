@@ -27,23 +27,15 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * <p>Generate final fields, a constructor for all fields in property order and a protected default constructor that
- * initializes all fields with <code>null</code> or primitive default values. All setter methods are removed.</p>
- *
- * <strong>Plugin parameters</strong>
- * <dl>
- *  <dt>-Ximmutable-model:skipUnmodifiableCollections</dt>
- *  <dd>Disable wrapping of collections with unmodifiable wrapper.</dd>
- * </dl>
- * Inspired by jaxb2-commons <a href="http://java.net/projects/jaxb2-commons/pages/Default-Value">Default Value plugin </a>
+ * <p>Generates hashCode, equals and toString methods using Guavas Objects helper class.</p>
  *
  * @author Daniel Wegener
- * @author Kenny MacLeod
  */
 public class XjcGuavaPlugin extends Plugin {
 
     public static final String OPTION_NAME = "Xguava";
     public static final String SKIP_TOSTRING_PARAM = "-"+OPTION_NAME + ":skipToString";
+
 
     @Override
     public String getOptionName() {
@@ -69,7 +61,6 @@ public class XjcGuavaPlugin extends Plugin {
     }
 
     private boolean skipToString = false;
-    private boolean skipHashCodeEquals = false;
 
     @Override
     public boolean run(final Outline outline, final Options options, final ErrorHandler errorHandler) {
@@ -83,7 +74,7 @@ public class XjcGuavaPlugin extends Plugin {
                 generateToStringMethod(model, implClass);
             }
 
-            if (!skipHashCodeEquals && !implClass.isAbstract()) {
+            if (!implClass.isAbstract()) {
                 if (implClass.getMethod("hashCode",new JType[0]) == null)
                     generateHashCodeMethod(model, implClass);
                 if (implClass.getMethod("equals",new JType[]{model._ref(Object.class)}) == null) {
