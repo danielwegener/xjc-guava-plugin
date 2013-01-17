@@ -33,14 +33,14 @@
     </prerequisites>
 
     <issueManagement>
-        <url>https://github.com/danielwegener/xml-immutable-plugin/issues</url>
+        <url>https://github.com/danielwegener/xml-guava-plugin/issues</url>
         <system>GitHub Issues</system>
     </issueManagement>
 
     <scm>
-        <url>https://github.com/danielwegener/xml-immutable-plugin</url>
-        <connection>scm:git:git:///github.com/danielwegener/xml-immutable-plugin.git</connection>
-        <developerConnection>scm:git:git@/github.com/danielwegener/xml-immutable-plugin.git</developerConnection>
+        <connection>scm:git:git@github.com:danielwegener/xjc-guava-plugin.git</connection>
+        <developerConnection>scm:git:git@github.com:danielwegener/xjc-guava-plugin.git</developerConnection>
+        <url>git@github.com:danielwegener/xjc-guava-plugin.git</url>
     </scm>
 
     <developers>
@@ -110,12 +110,6 @@
                                 <artifactId>${project.artifactId}</artifactId>
                                 <groupId>${project.groupId}</groupId>
                                 <version>${project.version}</version>
-                                <optional>true</optional>
-                            </dependency>
-                            <dependency>
-                                <artifactId>xjc-immutable-plugin</artifactId>
-                                <groupId>${project.groupId}</groupId>
-                                <version>0.1-SNAPSHOT</version>
                                 <optional>true</optional>
                             </dependency>
                         </dependencies>
