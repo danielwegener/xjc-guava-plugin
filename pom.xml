@@ -11,6 +11,7 @@
         <version>7</version>
     </parent>
 
+    <url>https://github.com/danielwegener/xjc-guava-plugin</url>
     <licenses>
         <license>
             <name>Apache License, Version 2.0</name>
@@ -97,10 +98,9 @@
                                     <wsdlFiles>
                                         <wsdlFile>${basedir}/src/test/resources/test.wsdl</wsdlFile>
                                     </wsdlFiles>
+
                                     <args>
                                         <arg>-B-Xguava</arg>
-                                        <arg>-B-Ximmutable-model</arg>
-                                        <!--<arg>-B-xjc-Ximmutable-model:skipUnmodifiableCollections</arg>-->
                                     </args>
                                 </configuration>
                             </execution>
