@@ -16,8 +16,6 @@ TODO example
 Usage
 ---------------------
 
-*xjc-guava-plugin is not yet in central*
-
 In contract first scenarios webservice clients models are often generated with jaxws.wsgen or cxf-codegen-plugin
 
 # using jaxws-maven-plugin
@@ -43,8 +41,8 @@ In contract first scenarios webservice clients models are often generated with j
     </executions>
     <dependencies>
         <dependency>
+            <groupId>com.github.danielwegener.xjc</groupId>
             <artifactId>xjc-guava-plugin</artifactId>
-            <groupId>com.github.danielwegener</groupId>
             <version>0.1</version>
         </dependency>
     </dependencies>
@@ -80,8 +78,8 @@ In contract first scenarios webservice clients models are often generated with j
     </executions>
     <dependencies>
         <dependency>
+            <groupId>com.github.danielwegener.xjc</groupId>
             <artifactId>xjc-guava-plugin</artifactId>
-            <groupId>com.github.danielwegener</groupId>
             <version>0.1</version>
         </dependency>
     </dependencies>
