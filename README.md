@@ -85,7 +85,7 @@ In contract first scenarios webservice clients models are often generated with j
                 <dependency>
                     <groupId>com.github.danielwegener.xjc</groupId>
                     <artifactId>xjc-guava-plugin</artifactId>
-                    <version>0.1</version>
+                    <version>0.2</version>
                 </dependency>
             </dependencies>
         </plugin>
@@ -133,7 +133,7 @@ In contract first scenarios webservice clients models are often generated with j
                 <dependency>
                     <groupId>com.github.danielwegener.xjc</groupId>
                     <artifactId>xjc-guava-plugin</artifactId>
-                    <version>0.1</version>
+                    <version>0.2</version>
                 </dependency>
             </dependencies>
         </plugin>
