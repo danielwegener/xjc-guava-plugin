@@ -118,14 +118,17 @@ public class XjcGuavaPlugin extends Plugin {
     }
 
     protected void generateHashCodeMethod(JCodeModel model, JDefinedClass clazz) {
-        final JMethod hashCodeMethod = clazz.method(JMod.PUBLIC, model.INT ,"hashCode");
-        hashCodeMethod.annotate(Override.class);
 
         final JClass objects = model.ref(com.google.common.base.Objects.class);
-        final Collection<JFieldVar> superClassInstanceFields = getInstanceFields(getSuperclassFields(clazz));
         final Collection<JFieldVar> thisClassInstanceFields = getInstanceFields(clazz.fields().values());
+        final Collection<JFieldVar> superClassInstanceFields = getInstanceFields(getSuperclassFields(clazz));
+        // Dont create hashCode for empty classes
+        if (thisClassInstanceFields.isEmpty() && superClassInstanceFields.isEmpty()) return;
 
+
+        final JMethod hashCodeMethod = clazz.method(JMod.PUBLIC, model.INT ,"hashCode");
         final JBlock content = hashCodeMethod.body();
+        hashCodeMethod.annotate(Override.class);
 
         final JInvocation hashCodeCall = objects.staticInvoke("hashCode");
 
@@ -142,13 +145,16 @@ public class XjcGuavaPlugin extends Plugin {
     }
 
     protected void generateEqualsMethod(JCodeModel model, JDefinedClass clazz) {
+        final Collection<JFieldVar> superClassInstanceFields = getInstanceFields(getSuperclassFields(clazz));
+        final Collection<JFieldVar> thisClassInstanceFields = getInstanceFields(clazz.fields().values());
+        // Dont create hashCode for empty classes
+        if (thisClassInstanceFields.isEmpty() && superClassInstanceFields.isEmpty()) return;
+
         final JMethod equalsMethod = clazz.method(JMod.PUBLIC, model.BOOLEAN ,"equals");
         equalsMethod.annotate(Override.class);
         final JVar other = equalsMethod.param(Object.class,"other");
 
         final JClass objects = model.ref(com.google.common.base.Objects.class);
-        final Collection<JFieldVar> superClassInstanceFields = getInstanceFields(getSuperclassFields(clazz));
-        final Collection<JFieldVar> thisClassInstanceFields = getInstanceFields(clazz.fields().values());
 
         final JBlock content = equalsMethod.body();
 
