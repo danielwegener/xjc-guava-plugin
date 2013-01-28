@@ -166,8 +166,10 @@ public class XjcGuavaPlugin extends Plugin {
 
         JExpression equalsBuilder = JExpr.TRUE;
 
+        final JConditional isOtherNotSameClass = content._if(JExpr.invoke("getClass").ne(other.invoke("getClass")));
+        isOtherNotSameClass._then()._return(JExpr.FALSE);
+
         final JVar otherTypesafe = content.decl(JMod.FINAL, clazz, "o", JExpr.cast(clazz, other));
-        content._if(otherTypesafe.eq(JExpr._null()))._then()._return(JExpr.FALSE);
 
         for (JFieldVar superField : superClassInstanceFields) {
             final JInvocation equalsInvocation = objects.staticInvoke("equal");
