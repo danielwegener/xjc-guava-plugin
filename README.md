@@ -1,6 +1,8 @@
 xjc-guava-plugin
 ================
 
+[![Build Status](https://secure.travis-ci.org/danielwegener/xjc-guava-plugin.png)](https://travis-ci.org/danielwegener/xjc-guava-plugin)
+
 *Fell in love with Guavas Objects.toStringHelper(), .hashCode() and .equals()? Tired of writing StringBuilders for JAX-WS wsgen generated Beans? This XJC Compiler plugin comes to the rescue and creates yummie standards methods for your JAX-B/WS Beans - with a taste of Guava.*
 
 Profit!
@@ -8,7 +10,7 @@ Profit!
 Example
 ---------------------
 This plugin generates guava standard methods for toString, hashCode and equals:
-```
+```java
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "thunderbolt", propOrder = {
     "intensity"
@@ -59,7 +61,7 @@ Usage
 In contract first scenarios webservice clients models are often generated with jaxws.wsgen or cxf-codegen-plugin
 
 # using jaxws-maven-plugin
-```
+```xml
 <build>
     <plugins>
         <plugin>
@@ -102,7 +104,7 @@ In contract first scenarios webservice clients models are often generated with j
 
 # using cxf-codegen-plugin
 
-```
+```xml
 <build>
     <plugins>
         <plugin>
