@@ -6,7 +6,7 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.Collection;
 
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -46,7 +46,7 @@ public class XjcGuavaPluginTest {
 
     @Test
     public void testGetInstanceFields() {
-        Collection<JFieldVar> instanceFields =  plugin.getInstanceFields(aClass.fields().values());
+        final Collection<JFieldVar> instanceFields =  plugin.getInstanceFields(aClass.fields().values());
         assertThat(instanceFields, not(hasItem(aStaticField)));
         assertThat(instanceFields, not(empty()));
     }
