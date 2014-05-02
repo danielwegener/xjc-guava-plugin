@@ -150,7 +150,7 @@ In contract first scenarios webservice clients models are often generated with j
 </dependencies>
 
 ```
-#xjc-guava-plugin
+#jaxb2-maven-plugin
 
 ```xml
 <build>
