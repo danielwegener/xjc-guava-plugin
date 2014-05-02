@@ -150,3 +150,45 @@ In contract first scenarios webservice clients models are often generated with j
 </dependencies>
 
 ```
+#xjc-guava-plugin
+```
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>jaxb2-maven-plugin</artifactId>
+            <version>1.6</version>
+            <dependencies>
+                <dependency>
+                    <groupId>com.github.danielwegener.xjc</groupId>
+                    <artifactId>xjc-guava-plugin</artifactId>
+                    <version>0.3</version>
+                </dependency>
+                <dependency>
+                    <groupId>xerces</groupId>
+                    <artifactId>xercesImpl</artifactId>
+                    <version>2.11.0</version>
+                </dependency>
+            </dependencies>
+            <configuration>
+                <arguments>-Xguava</arguments>
+            </configuration>
+            <executions>
+                <execution>
+                    <id>generate-model</id>
+                    <goals>
+                        <goal>xjc</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+    <dependencies>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
+    </dependencies>
+</build>
+```
