@@ -151,7 +151,8 @@ In contract first scenarios webservice clients models are often generated with j
 
 ```
 #xjc-guava-plugin
-```
+
+```xml
 <build>
     <plugins>
         <plugin>
