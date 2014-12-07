@@ -173,14 +173,14 @@ public class XjcGuavaPlugin extends Plugin {
 
         for (JFieldVar superField : superClassInstanceFields) {
             final JInvocation equalsInvocation = objects.staticInvoke("equal");
-            equalsInvocation.arg(superField);
+            equalsInvocation.arg(JExpr._this().ref(superField));
             equalsInvocation.arg(otherTypesafe.ref(superField));
             equalsBuilder = equalsBuilder.cand(equalsInvocation);
         }
 
         for (JFieldVar thisField : thisClassInstanceFields) {
             final JInvocation equalsInvocation = objects.staticInvoke("equal");
-            equalsInvocation.arg(thisField);
+            equalsInvocation.arg(JExpr._this().ref(thisField));
             equalsInvocation.arg(otherTypesafe.ref(thisField));
             equalsBuilder = equalsBuilder.cand(equalsInvocation);
         }
