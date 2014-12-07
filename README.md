@@ -2,6 +2,7 @@ xjc-guava-plugin
 ================
 
 [![Build Status](https://secure.travis-ci.org/danielwegener/xjc-guava-plugin.png)](https://travis-ci.org/danielwegener/xjc-guava-plugin)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.danielwegener.xjc/xjc-guava-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.danielwegener.xjc/xjc-guava-plugin)
 
 *Fell in love with Guavas Objects.toStringHelper(), .hashCode() and .equals()? Tired of writing StringBuilders for JAX-WS wsgen generated Beans? This XJC Compiler plugin comes to the rescue and creates yummie standards methods for your JAX-B/WS Beans - with a taste of Guava.*
 
