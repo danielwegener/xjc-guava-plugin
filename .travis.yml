@@ -1,2 +1,7 @@
 language: java
-install: mvn install -DskipTests=true -Dgpg.skip=true
+sudo: false
+cache:
+  directories:
+  - $HOME/.m2
+install: mvn install -DskipTests=true -Dgpg.skip=true -q
+script: mvn verify -B -q
