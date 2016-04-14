@@ -56,13 +56,11 @@ public class XjcGuavaPluginTest {
         assertThat(plugin.getSuperclassFields(aClass), equalTo(Arrays.asList(aSuperClassField)));
     }
 
-
     @Test
     public void testIsStatic() {
         assertThat(plugin.isStatic(aStaticField), equalTo(true));
         assertThat(plugin.isStatic(aField), equalTo(false));
     }
-
 
     @Test
     public void testGenerateToString() {
@@ -72,5 +70,20 @@ public class XjcGuavaPluginTest {
         assertThat(generatedMethod.type().fullName(), equalTo(String.class.getName()));
     }
 
+    @Test
+    public void testGenerateHashCode() throws ClassNotFoundException {
+        plugin.generateHashCodeMethod(aModel,aClass);
+        final JMethod generatedMethod = aClass.getMethod("hashCode", new JType[]{});
+        assertThat(generatedMethod, not(nullValue()));
+        assertThat(generatedMethod.type().fullName(), equalTo("int"));
+    }
+
+    @Test
+    public void testGenerateEquals() throws ClassNotFoundException {
+        plugin.generateEqualsMethod(aModel,aClass);
+        final JMethod generatedMethod = aClass.getMethod("equals", new JType[]{aModel.parseType("java.lang.Object")});
+        assertThat(generatedMethod, not(nullValue()));
+        assertThat(generatedMethod.type().fullName(), equalTo("boolean"));
+    }
 
 }
