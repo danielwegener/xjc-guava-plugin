@@ -70,7 +70,7 @@ public class XjcGuavaPlugin extends Plugin {
 
             final JDefinedClass implClass = classOutline.implClass;
 
-            if (!skipToString && !implClass.isAbstract() && implClass.getMethod("toString",new JType[0]) == null) {
+            if (!skipToString && !implClass.isAbstract() && implClass.getMethod("toString", new JType[0]) == null) {
                 generateToStringMethod(model, implClass);
             }
 
@@ -88,7 +88,7 @@ public class XjcGuavaPlugin extends Plugin {
     protected void generateToStringMethod(JCodeModel model, JDefinedClass clazz) {
         final JMethod toStringMethod = clazz.method(JMod.PUBLIC, String.class,"toString");
         toStringMethod.annotate(Override.class);
-        final JClass objects = model.ref(com.google.common.base.Objects.class);
+        final JClass objects = model.ref("com.google.common.base.Objects");
         final Collection<JFieldVar> superClassInstanceFields = getInstanceFields(getSuperclassFields(clazz));
         final Collection<JFieldVar> thisClassInstanceFields = getInstanceFields(clazz.fields().values());
 
@@ -122,7 +122,7 @@ public class XjcGuavaPlugin extends Plugin {
         final JClass objects = model.ref(com.google.common.base.Objects.class);
         final Collection<JFieldVar> thisClassInstanceFields = getInstanceFields(clazz.fields().values());
         final Collection<JFieldVar> superClassInstanceFields = getInstanceFields(getSuperclassFields(clazz));
-        // Dont create hashCode for empty classes
+        // Don't create hashCode for empty classes
         if (thisClassInstanceFields.isEmpty() && superClassInstanceFields.isEmpty()) return;
 
 
@@ -147,7 +147,7 @@ public class XjcGuavaPlugin extends Plugin {
     protected void generateEqualsMethod(JCodeModel model, JDefinedClass clazz) {
         final Collection<JFieldVar> superClassInstanceFields = getInstanceFields(getSuperclassFields(clazz));
         final Collection<JFieldVar> thisClassInstanceFields = getInstanceFields(clazz.fields().values());
-        // Dont create hashCode for empty classes
+        // Don't create equals for empty classes
         if (thisClassInstanceFields.isEmpty() && superClassInstanceFields.isEmpty()) return;
 
         final JMethod equalsMethod = clazz.method(JMod.PUBLIC, model.BOOLEAN ,"equals");
@@ -155,6 +155,7 @@ public class XjcGuavaPlugin extends Plugin {
         final JVar other = equalsMethod.param(Object.class,"other");
 
         final JClass objects = model.ref(com.google.common.base.Objects.class);
+        final JClass arrays = model.ref(java.util.Arrays.class);
 
         final JBlock content = equalsMethod.body();
 
@@ -172,14 +173,25 @@ public class XjcGuavaPlugin extends Plugin {
         final JVar otherTypesafe = content.decl(JMod.FINAL, clazz, "o", JExpr.cast(clazz, other));
 
         for (JFieldVar superField : superClassInstanceFields) {
-            final JInvocation equalsInvocation = objects.staticInvoke("equal");
+            final JInvocation equalsInvocation;
+            if (superField.type().isArray()) {
+                equalsInvocation = arrays.staticInvoke("equals");
+            } else {
+                equalsInvocation = objects.staticInvoke("equal");
+            }
+
             equalsInvocation.arg(JExpr._this().ref(superField));
             equalsInvocation.arg(otherTypesafe.ref(superField));
             equalsBuilder = equalsBuilder.cand(equalsInvocation);
         }
 
         for (JFieldVar thisField : thisClassInstanceFields) {
-            final JInvocation equalsInvocation = objects.staticInvoke("equal");
+            final JInvocation equalsInvocation;
+            if (thisField.type().isArray()) {
+                equalsInvocation = arrays.staticInvoke("equals");
+            } else {
+                equalsInvocation = objects.staticInvoke("equal");
+            }
             equalsInvocation.arg(JExpr._this().ref(thisField));
             equalsInvocation.arg(otherTypesafe.ref(thisField));
             equalsBuilder = equalsBuilder.cand(equalsInvocation);
